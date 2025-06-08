@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inatel App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div id="messageModal" class="modal">
+        <div class="modal-content rounded-lg">
+            <p id="modalMessage" class="text-lg mb-4"></p>
+            <button onclick="closeModal()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">OK</button>
+        </div>
+    </div>
+
+    <div id="authPage" class="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600">
+        <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+            <div class="flex justify-center mb-6">
+                <svg class="svg_logo_inatel_login" xmlns="http://www.w3.org/2000/svg" viewBox="100 150 390 116">
+                    <path class="path_logo" d="M127.455,156.988h21.287l-21.859,102.835H105.69L127.455,156.988L127.455,156.988z M225.618,208.048 l-10.941,51.775H194.51l9.726-45.911c0.286-1.168,0.477-2.312,0.62-3.456c0.143-1.144,0.214-2.145,0.214-3.027 c0-2.86-0.834-4.982-2.527-6.412c-1.668-1.407-4.147-2.122-7.461-2.122c-5.078,0-9.392,1.406-12.968,4.219 c-3.552,2.836-5.888,6.698-6.96,11.633l-9.559,45.076h-20.31l16.186-75.946h19.905l-2.002,9.559 c3.957-3.886,8.105-6.794,12.491-8.701c4.362-1.907,9.011-2.86,13.945-2.86c6.508,0,11.656,1.501,15.447,4.529 c3.79,3.027,5.697,7.151,5.697,12.372c0,1.239-0.096,2.55-0.286,3.933S226.143,205.855,225.618,208.048L225.618,208.048z M282.709,222.636c-3.29,1.455-7.318,2.646-12.038,3.6c-4.744,0.954-7.557,1.55-8.438,1.788c-3.218,0.978-5.674,2.526-7.414,4.648 c-1.716,2.122-2.574,4.672-2.574,7.652c0,2.074,0.739,3.719,2.24,4.887c1.478,1.168,3.552,1.74,6.222,1.74 c5.078,0,9.487-1.574,13.206-4.721s6.15-7.342,7.271-12.61L282.709,222.636L282.709,222.636z M306.333,202.613l-9.154,43.145 c-0.238,1.313-0.405,2.432-0.524,3.361s-0.167,1.717-0.167,2.385c0,1.168,0.167,2.098,0.548,2.789 c0.381,0.715,1.049,1.406,2.026,2.098l-0.763,3.432h-21.025c-0.048-0.285-0.143-0.643-0.286-1.119 c-0.381-1.813-0.572-3.076-0.572-3.768c0-0.428,0.048-1,0.119-1.715c0.072-0.74,0.167-1.574,0.31-2.551 c-3.218,3.861-7.032,6.793-11.49,8.818c-4.458,2.027-9.344,3.053-14.708,3.053c-5.721,0-10.274-1.455-13.659-4.338 c-3.361-2.885-5.054-6.771-5.054-11.658c0-9.51,2.574-16.876,7.724-22.097c5.125-5.197,13.206-8.629,24.171-10.25 c1.788-0.287,4.195-0.645,7.271-1.049c10.131-1.168,15.185-4.53,15.185-10.108c0-2.098-0.834-3.623-2.527-4.577 c-1.669-0.954-4.338-1.43-8.033-1.43c-4.195,0-7.581,0.93-10.131,2.813c-2.574,1.883-4.052,4.529-4.481,7.914h-19.166 c1.359-8.2,5.292-14.684,11.824-19.451c6.507-4.768,14.731-7.151,24.672-7.151c8.987,0,15.971,1.454,20.954,4.362 s7.484,6.984,7.484,12.205c0,0.834-0.047,1.668-0.143,2.503C306.642,201.063,306.5,201.874,306.333,202.613L306.333,202.613z M335.081,163.281h20.31l-4.338,20.595h12.634l-3.004,14.303h-12.776l-8.844,42.026c0,0.238-0.048,0.547-0.144,0.93 c-0.095,0.404-0.144,0.668-0.144,0.811c0,1.119,0.549,1.93,1.67,2.406c1.119,0.502,3.051,0.74,5.792,0.74h4.409l-3.289,15.303 c-1.168,0.049-2.717,0.096-4.672,0.145c-3.528,0.094-5.84,0.143-6.913,0.143c-6.508,0-11.18-0.883-14.017-2.646 c-2.837-1.787-4.267-4.672-4.267-8.678c0-1.119,0.118-2.455,0.357-4.051c0.214-1.574,0.596-3.6,1.12-6.08l8.701-41.048h-10.752 l3.004-14.303h10.895L335.081,163.281L335.081,163.281z M432.339,227.213H383.4c-0.167,1.025-0.311,2.026-0.405,3.004 s-0.144,1.835-0.144,2.574c0,4.1,0.978,7.199,2.956,9.297s4.911,3.146,8.772,3.146c3.266,0,6.031-0.668,8.344-1.979 c2.313-1.334,4.434-3.48,6.389-6.46h20.309c-3.576,7.962-8.914,14.208-16.018,18.761c-7.105,4.553-14.994,6.842-23.695,6.842 c-8.63,0-15.424-2.551-20.43-7.676c-5.006-5.127-7.508-12.016-7.508-20.692c0-6.197,1.096-12.609,3.289-19.236 c2.17-6.627,5.077-12.325,8.725-17.092c4.172-5.435,9.059-9.559,14.588-12.348c5.531-2.789,11.633-4.195,18.283-4.195 c8.939,0,15.924,2.36,20.955,7.104c5.029,4.72,7.531,11.275,7.531,19.666c0,2.193-0.213,4.696-0.666,7.534 C434.246,218.322,433.458,222.232,432.339,227.213L432.339,227.213z M414.46,213.912c0.143-1.119,0.262-2.098,0.334-2.955 c0.07-0.858,0.096-1.55,0.096-2.05c0-3.385-0.979-6.031-2.957-7.914s-4.768-2.813-8.344-2.813c-4.146,0-7.676,1.335-10.607,4.005 s-5.172,6.579-6.697,11.728H414.46L414.46,213.912z M461.826,156.988h20.311l-21.932,102.835h-20.262L461.826,156.988 L461.826,156.988z"></path>
+                </svg>
+            </div>
+            <h2 id="authTitle" class="text-3xl font-bold text-center text-gray-800 mb-6 hidden">Login</h2>
+            <form id="authForm">
+                <div class="mb-4">
+                    <label for="matricula" class="block text-gray-700 text-sm font-bold mb-2">Matrícula:</label>
+                    <input type="text" id="matricula" name="matricula" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
+                <div class="mb-6">
+                    <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Senha:</label>
+                    <input type="password" id="password" name="password" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
+                <div class="flex items-center justify-between">
+                    <button type="submit" id="authButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline w-full">Entrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="mainApp" class="hidden flex min-h-screen">
+        <div id="sidebar" class="sidebar fixed top-0 left-0 h-full bg-white shadow-md z-50 rounded-r-lg">
+            <div class="p-4 flex justify-between items-center border-b border-gray-200">
+                <h3 class="text-xl font-bold text-gray-800">Menu</h3>
+                <button onclick="toggleSidebar()" class="text-gray-600 hover:text-gray-800 focus:outline-none">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="mt-4">
+                <a href="#" onclick="showPage('homePage')" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded-lg mx-2 my-1"><i class="fas fa-home mr-2"></i> Home</a>
+                <a href="#" onclick="showPage('studentInfoPage')" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded-lg mx-2 my-1"><i class="fas fa-user-graduate mr-2"></i> Informações do Aluno</a>
+                <a href="#" onclick="showPage('scholarshipsPage')" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded-lg mx-2 my-1"><i class="fas fa-money-bill-wave mr-2"></i> Bolsas Disponíveis</a>
+                <a href="#" onclick="toggleDarkMode()" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded-lg mx-2 my-1"><i class="fas fa-moon mr-2"></i> Tema Claro/Escuro</a>
+                <a href="#" onclick="showPage('frequencyPage')" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded-lg mx-2 my-1"><i class="fas fa-clipboard-check mr-2"></i> Frequência</a>
+                <a href="#" onclick="showPage('dailyClassesPage')" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded-lg mx-2 my-1"><i class="fas fa-calendar-alt mr-2"></i> Aulas do Dia</a>
+                <a href="#" onclick="showPage('jobVacanciesPage')" class="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded-lg mx-2 my-1"><i class="fas fa-briefcase mr-2"></i> Vagas de Emprego</a>
+                <a href="#" onclick="logout()" class="block py-2 px-4 text-red-600 hover:bg-red-100 rounded-lg mx-2 my-1"><i class="fas fa-sign-out-alt mr-2"></i> Sair</a>
+            </nav>
+        </div>
+
+        <div id="contentArea" class="flex-1 p-6 content-area">
+            <header class="flex justify-between items-center mb-6">
+                <button onclick="toggleSidebar()" class="p-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="logo-container">
+                    <svg class="svg_logo_inatel_header" xmlns="http://www.w3.org/2000/svg" viewBox="100 150 390 116">
+                        <path class="path_logo" d="M127.455,156.988h21.287l-21.859,102.835H105.69L127.455,156.988L127.455,156.988z M225.618,208.048 l-10.941,51.775H194.51l9.726-45.911c0.286-1.168,0.477-2.312,0.62-3.456c0.143-1.144,0.214-2.145,0.214-3.027 c0-2.86-0.834-4.982-2.527-6.412c-1.668-1.407-4.147-2.122-7.461-2.122c-5.078,0-9.392,1.406-12.968,4.219 c-3.552,2.836-5.888,6.698-6.96,11.633l-9.559,45.076h-20.31l16.186-75.946h19.905l-2.002,9.559 c3.957-3.886,8.105-6.794,12.491-8.701c4.362-1.907,9.011-2.86,13.945-2.86c6.508,0,11.656,1.501,15.447,4.529 c3.79,3.027,5.697,7.151,5.697,12.372c0,1.239-0.096,2.55-0.286,3.933S226.143,205.855,225.618,208.048L225.618,208.048z M282.709,222.636c-3.29,1.455-7.318,2.646-12.038,3.6c-4.744,0.954-7.557,1.55-8.438,1.788c-3.218,0.978-5.674,2.526-7.414,4.648 c-1.716,2.122-2.574,4.672-2.574,7.652c0,2.074,0.739,3.719,2.24,4.887c1.478,1.168,3.552,1.74,6.222,1.74 c5.078,0,9.487-1.574,13.206-4.721s6.15-7.342,7.271-12.61L282.709,222.636L282.709,222.636z M306.333,202.613l-9.154,43.145 c-0.238,1.313-0.405,2.432-0.524,3.361s-0.167,1.717-0.167,2.385c0,1.168,0.167,2.098,0.548,2.789 c0.381,0.715,1.049,1.406,2.026,2.098l-0.763,3.432h-21.025c-0.048-0.285-0.143-0.643-0.286-1.119 c-0.381-1.813-0.572-3.076-0.572-3.768c0-0.428,0.048-1,0.119-1.715c0.072-0.74,0.167-1.574,0.31-2.551 c-3.218,3.861-7.032,6.793-11.49,8.818c-4.458,2.027-9.344,3.053-14.708,3.053c-5.721,0-10.274-1.455-13.659-4.338 c-3.361-2.885-5.054-6.771-5.054-11.658c0-9.51,2.574-16.876,7.724-22.097c5.125-5.197,13.206-8.629,24.171-10.25 c1.788-0.287,4.195-0.645,7.271-1.049c10.131-1.168,15.185-4.53,15.185-10.108c0-2.098-0.834-3.623-2.527-4.577 c-1.669-0.954-4.338-1.43-8.033-1.43c-4.195,0-7.581,0.93-10.131,2.813c-2.574,1.883-4.052,4.529-4.481,7.914h-19.166 c1.359-8.2,5.292-14.684,11.824-19.451c6.507-4.768,14.731-7.151,24.672-7.151c8.987,0,15.971,1.454,20.954,4.362 s7.484,6.984,7.484,12.205c0,0.834-0.047,1.668-0.143,2.503C306.642,201.063,306.5,201.874,306.333,202.613L306.333,202.613z M335.081,163.281h20.31l-4.338,20.595h12.634l-3.004,14.303h-12.776l-8.844,42.026c0,0.238-0.048,0.547-0.144,0.93 c-0.095,0.404-0.144,0.668-0.144,0.811c0,1.119,0.549,1.93,1.67,2.406c1.119,0.502,3.051,0.74,5.792,0.74h4.409l-3.289,15.303 c-1.168,0.049-2.717,0.096-4.672,0.145c-3.528,0.094-5.84,0.143-6.913,0.143c-6.508,0-11.18-0.883-14.017-2.646 c-2.837-1.787-4.267-4.672-4.267-8.678c0-1.119,0.118-2.455,0.357-4.051c0.214-1.574,0.596-3.6,1.12-6.08l8.701-41.048h-10.752 l3.004-14.303h10.895L335.081,163.281L335.081,163.281z M432.339,227.213H383.4c-0.167,1.025-0.311,2.026-0.405,3.004 s-0.144,1.835-0.144,2.574c0,4.1,0.978,7.199,2.956,9.297s4.911,3.146,8.772,3.146c3.266,0,6.031-0.668,8.344-1.979 c2.313-1.334,4.434-3.48,6.389-6.46h20.309c-3.576,7.962-8.914,14.208-16.018,18.761c-7.105,4.553-14.994,6.842-23.695,6.842 c-8.63,0-15.424-2.551-20.43-7.676c-5.006-5.127-7.508-12.016-7.508-20.692c0-6.197,1.096-12.609,3.289-19.236 c2.17-6.627,5.077-12.325,8.725-17.092c4.172-5.435,9.059-9.559,14.588-12.348c5.531-2.789,11.633-4.195,18.283-4.195 c8.939,0,15.924,2.36,20.955,7.104c5.029,4.72,7.531,11.275,7.531,19.666c0,2.193-0.213,4.696-0.666,7.534 C434.246,218.322,433.458,222.232,432.339,227.213L432.339,227.213z M414.46,213.912c0.143-1.119,0.262-2.098,0.334-2.955 c0.07-0.858,0.096-1.55,0.096-2.05c0-3.385-0.979-6.031-2.957-7.914s-4.768-2.813-8.344-2.813c-4.146,0-7.676,1.335-10.607,4.005 s-5.172,6.579-6.697,11.728H414.46L414.46,213.912z M461.826,156.988h20.311l-21.932,102.835h-20.262L461.826,156.988 L461.826,156.988z"></path>
+                    </svg>
+                </div>
+                <div class="w-10"></div> 
+            </header>
+
+            <div id="homePage" class="page active-page">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Notícias do Inatel</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Inatel lança novo curso de Pós-Graduação em IA</h3>
+                        <p class="text-gray-600 text-sm">O Inatel anuncia o lançamento de seu mais recente curso de pós-graduação, focado em Inteligência Artificial e Machine Learning, visando capacitar profissionais para os desafios do mercado.</p>
+                        <a href="#" class="text-blue-500 hover:underline mt-2 inline-block">Leia mais</a>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Hackathon Inatel 2025: Inscrições Abertas!</h3>
+                        <p class="text-gray-600 text-sm">Prepare-se para o maior evento de inovação do Inatel! O Hackathon 2025 está com inscrições abertas para estudantes e profissionais da área de tecnologia.</p>
+                        <a href="#" class="text-blue-500 hover:underline mt-2 inline-block">Leia mais</a>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Feira de Carreiras Inatel conecta alunos e empresas</h3>
+                        <p class="text-gray-600 text-sm">A Feira de Carreiras anual do Inatel foi um sucesso, reunindo diversas empresas de tecnologia e proporcionando oportunidades de estágio e emprego aos nossos alunos.</p>
+                        <a href="#" class="text-blue-500 hover:underline mt-2 inline-block">Leia mais</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="studentInfoPage" class="page hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Informações do Aluno</h2>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="mb-2 text-xl font-bold"><span class="text-blue-600">Matrícula:</span> <span id="displayMatricula"></span></p>
+                    <p class="mb-2"><span class="font-semibold">Nome:</span> Ana Clara Silva</p>
+                    <p class="mb-2"><span class="font-semibold">Curso:</span> Engenharia de Computação</p>
+                    <p class="mb-2"><span class="font-semibold">E-mail:</span> <span id="displayEmail"></span></p>
+                    <p class="mb-2"><span class="font-semibold">Período:</span> 5º Período</p>
+                </div>
+            </div>
+
+            <div id="scholarshipsPage" class="page hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Bolsas Disponíveis</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">FIES</h3>
+                        <p class="text-gray-600 text-sm">O Fundo de Financiamento Estudantil (FIES) é um programa do Ministério da Educação (MEC) destinado a financiar cursos de graduação em instituições de ensino superior privadas.</p>
+                        <a href="https://www.gov.br/mec/pt-br/assuntos/fies" target="_blank" class="text-blue-500 hover:underline mt-2 inline-block">Mais informações</a>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">FINATEL</h3>
+                        <p class="text-gray-600 text-sm">O FINATEL é um programa de financiamento estudantil próprio do Inatel, oferecendo condições especiais para os alunos da instituição.</p>
+                        <a href="#" class="text-blue-500 hover:underline mt-2 inline-block">Mais informações (simulado)</a>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Bolsa Mérito Inatel</h3>
+                        <p class="text-gray-600 text-sm">A Bolsa Mérito Inatel é concedida a alunos com excelente desempenho acadêmico, como forma de incentivo e reconhecimento.</p>
+                        <a href="#" class="text-blue-500 hover:underline mt-2 inline-block">Mais informações (simulado)</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="frequencyPage" class="page hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Frequência por Disciplina</h2>
+                <div id="frequencyContent" class="bg-white p-6 rounded-lg shadow-md">
+                </div>
+            </div>
+
+            <div id="dailyClassesPage" class="page hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Aulas do Dia</h2>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Calendário de Aulas</h3>
+                    <div class="grid grid-cols-7 gap-1 text-center text-sm font-semibold mb-2">
+                        <div>Dom</div>
+                        <div>Seg</div>
+                        <div>Ter</div>
+                        <div>Qua</div>
+                        <div>Qui</div>
+                        <div>Sex</div>
+                        <div>Sáb</div>
+                    </div>
+                    <div id="calendarGrid" class="grid grid-cols-7 gap-1 text-center">
+                    </div>
+                    <p class="text-sm text-gray-600 mt-4">Passe o mouse sobre um dia marcado para ver os detalhes da aula.</p>
+                </div>
+            </div>
+
+            <div id="jobVacanciesPage" class="page hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Vagas de Emprego</h2>
+                <div class="flex space-x-4 mb-6">
+                    <button id="btnAvailableVacancies" class="tab-button bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 active">Vagas Disponíveis</button>
+                    <button id="btnAppliedVacancies" class="tab-button bg-gray-200 text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50">Vagas Candidatadas</button>
+                </div>
+
+                <div id="availableVacanciesContent" class="vacancies-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+
+                <div id="appliedVacanciesContent" class="vacancies-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+                    <p class="text-gray-600 text-center col-span-full" id="noAppliedVacanciesMessage">Nenhuma vaga candidata ainda.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
