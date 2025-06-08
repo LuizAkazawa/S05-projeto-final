@@ -86,7 +86,6 @@ body.dark-mode {
     color: #e2e8f0;
 }
 
-/* Styles for sub-tabs in Job Vacancies */
 .tab-button {
     padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
@@ -112,7 +111,6 @@ body.dark-mode {
     background-color: #60a5fa;
 }
 
-/* Logo specific styles */
 .svg_logo_inatel_login {
     width: 80%; 
     height: auto;
@@ -124,13 +122,14 @@ body.dark-mode {
     height: auto;
 }
 
-/* FIX: Regras de cor da logo mais explícitas para evitar problemas de cache/especificidade */
-/* Cor da logo para o modo claro */
 body:not(.dark-mode) .path_logo {
     fill: #1D4ED8; 
 }
 
-/* Cor da logo para o modo escuro */
 .dark-mode .path_logo {
     fill: #93C5FD; 
+}
+
+.application-details p {
+    margin-bottom: 0.25rem;
 }
