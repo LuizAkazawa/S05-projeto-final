@@ -229,7 +229,7 @@ function renderFrequency() {
 
 
 function renderDailyClasses() {
-    calendarGrid.innerHTML = '';e
+    calendarGrid.innerHTML = '';
 
     const today = new Date();
     const currentMonth = today.getMonth();
