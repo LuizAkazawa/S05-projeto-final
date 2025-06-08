@@ -124,10 +124,13 @@ body.dark-mode {
     height: auto;
 }
 
-.path_logo {
+/* FIX: Regras de cor da logo mais explícitas para evitar problemas de cache/especificidade */
+/* Cor da logo para o modo claro */
+body:not(.dark-mode) .path_logo {
     fill: #1D4ED8; 
 }
 
+/* Cor da logo para o modo escuro */
 .dark-mode .path_logo {
     fill: #93C5FD; 
 }

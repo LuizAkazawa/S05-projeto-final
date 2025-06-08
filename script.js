@@ -4,11 +4,11 @@ let loggedInMatricula = ''; // guarda matricula do login
 
 // simulando vagas disponiveis
 const allVacancies = [
-    { id: 1, title: 'Estágio em Desenvolvimento Front-end', company: 'Empresa X', description: 'Empresa X busca estagiário para atuar no desenvolvimento de interfaces web utilizando React e Tailwind CSS.', location: 'Remoto', status: 'available' },
-    { id: 2, title: 'Analista de Dados Júnior', company: 'Startup Y', description: 'Startup Y procura analista de dados com conhecimento em SQL e Python para auxiliar na análise de grandes volumes de dados.', location: 'São Paulo, SP', status: 'available' },
-    { id: 3, title: 'Engenheiro de Software (Back-end)', company: 'Empresa Z', description: 'Empresa Z busca engenheiro de software com experiência em Node.js e bancos de dados NoSQL.', location: 'Santa Rita do Sapucaí, MG', status: 'available' },
-    { id: 4, title: 'Desenvolvedor Mobile Pleno', company: 'Tech Solutions', description: 'Tech Solutions procura desenvolvedor mobile com experiência em Flutter ou React Native.', location: 'Belo Horizonte, MG', status: 'available' },
-    { id: 5, title: 'Designer UX/UI Júnior', company: 'Creative Minds', description: 'Creative Minds busca designer UX/UI para criar interfaces intuitivas e agradáveis.', location: 'Remoto', status: 'available' },
+    { id: 1, title: 'Estágio em Desenvolvimento Front-end', company: 'Empresa X', description: 'Empresa X busca estagiário para atuar no desenvolvimento de interfaces web utilizando React e Tailwind CSS.', location: 'Remoto', status: 'available', isSaved: false },
+    { id: 2, title: 'Analista de Dados Júnior', company: 'Startup Y', description: 'Startup Y procura analista de dados com conhecimento em SQL e Python para auxiliar na análise de grandes volumes de dados.', location: 'São Paulo, SP', status: 'available', isSaved: false },
+    { id: 3, title: 'Engenheiro de Software (Back-end)', company: 'Empresa Z', description: 'Empresa Z busca engenheiro de software com experiência em Node.js e bancos de dados NoSQL.', location: 'Santa Rita do Sapucaí, MG', status: 'available', isSaved: false },
+    { id: 4, title: 'Desenvolvedor Mobile Pleno', company: 'Tech Solutions', description: 'Tech Solutions procura desenvolvedor mobile com experiência em Flutter ou React Native.', location: 'Belo Horizonte, MG', status: 'available', isSaved: false },
+    { id: 5, title: 'Designer UX/UI Júnior', company: 'Creative Minds', description: 'Creative Minds busca designer UX/UI para criar interfaces intuitivas e agradáveis.', location: 'Remoto', status: 'available', isSaved: false },
 ];
 
 // frequencia simulada
@@ -135,10 +135,13 @@ const frequencyContent = document.getElementById('frequencyContent');
 const calendarGrid = document.getElementById('calendarGrid');
 
 // variaveis para auxiliar na interação com as vagas
+const jobVacanciesPage = document.getElementById('jobVacanciesPage');
 const btnAvailableVacancies = document.getElementById('btnAvailableVacancies');
 const btnAppliedVacancies = document.getElementById('btnAppliedVacancies');
+const btnSavedVacancies = document.getElementById('btnSavedVacancies');
 const availableVacanciesContent = document.getElementById('availableVacanciesContent');
 const appliedVacanciesContent = document.getElementById('appliedVacanciesContent');
+const savedVacanciesContent = document.getElementById('savedVacanciesContent');
 const noAppliedVacanciesMessage = document.getElementById('noAppliedVacanciesMessage');
 
 
@@ -154,20 +157,11 @@ function closeModal() {
 // forma de login sem necessariamente estar com as credenciais corretas (apenas para simular o login)
 authForm.addEventListener('submit', function(event) {
     event.preventDefault();
-    console.log('Formulário de login submetido.'); // Debug
-
     loggedInMatricula = matriculaInput.value; 
-
     isLoggedIn = true;
-
     authPage.classList.add('hidden');
     mainApp.classList.remove('hidden');
-
-    console.log('authPage agora está hidden:', authPage.classList.contains('hidden')); // Debug: Verifica se authPage está oculto
-    console.log('mainApp agora está visível:', !mainApp.classList.contains('hidden')); // Debug: Verifica se mainApp está visível
-
-    showPage('homePage'); // vai pra home
-    console.log('Redirecionando para a homePage.'); // Debug chamada da home page
+    showPage('homePage');
 });
 
 function toggleSidebar() {
@@ -180,8 +174,9 @@ function showPage(pageId) {
         page.classList.add('hidden');
         page.classList.remove('active-page');
     });
-    document.getElementById(pageId).classList.remove('hidden');
-    document.getElementById(pageId).classList.add('active-page');
+    const activePage = document.getElementById(pageId);
+    activePage.classList.remove('hidden');
+    activePage.classList.add('active-page');
 
     if (pageId === 'jobVacanciesPage') {
         renderVacancies(); 
@@ -247,7 +242,8 @@ function renderDailyClasses() {
         let dayClassesIndicatorClass = '';
 
         if (classesForDay.length > 0) {
-            dayClassesIndicatorClass = 'bg-blue-100 rounded-md relative group cursor-pointer';
+            // FIX: Adicionado text-blue-800, dark:text-blue-100 e font-bold para melhorar a legibilidade
+            dayClassesIndicatorClass = 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100 font-bold rounded-md relative group cursor-pointer';
             dayClassesHtml += `<div class="absolute hidden group-hover:block bg-blue-600 text-white text-xs rounded-md p-2 z-10 w-48 -mt-1 -ml-24 left-1/2 transform -translate-x-1/2 shadow-lg">`;
             classesForDay.forEach(cls => {
                 dayClassesHtml += `<p class="font-bold">${cls.time} - ${cls.subject}</p><p>${cls.room}</p>`;
@@ -283,12 +279,14 @@ function toggleDarkMode() {
 function renderVacancies() {
     availableVacanciesContent.innerHTML = '';
     appliedVacanciesContent.innerHTML = '';
+    savedVacanciesContent.innerHTML = '';
 
     const available = allVacancies.filter(v => v.status === 'available');
-    const applied = allVacancies.filter(v => v.status !== 'available');  //se não estiver disponível, está aplicada
+    const applied = allVacancies.filter(v => v.status !== 'available');
+    const saved = allVacancies.filter(v => v.isSaved);
 
     if (available.length === 0) {
-        availableVacanciesContent.innerHTML = '<p class="text-gray-600 text-center col-span-full">Nenhuma vaga disponível no momento.</p>';
+        availableVacanciesContent.innerHTML = '<p class="text-gray-600 dark:text-gray-300 text-center col-span-full">Nenhuma vaga disponível no momento.</p>';
     } else {
         available.forEach(vacancy => {
             availableVacanciesContent.innerHTML += createVacancyCard(vacancy);
@@ -304,10 +302,13 @@ function renderVacancies() {
         });
     }
 
-    document.querySelectorAll('.apply-button').forEach(button => {
-        button.removeEventListener('click', handleApplyButtonClick); // Avoid duplicate listeners
-        button.addEventListener('click', handleApplyButtonClick);
-    });
+    if (saved.length === 0) {
+        savedVacanciesContent.innerHTML = '<p class="text-gray-600 dark:text-gray-300 text-center col-span-full">Nenhuma vaga salva ainda.</p>';
+    } else {
+        saved.forEach(vacancy => {
+            savedVacanciesContent.innerHTML += createVacancyCard(vacancy);
+        });
+    }
 }
 
 function createVacancyCard(vacancy) {
@@ -330,32 +331,44 @@ function createVacancyCard(vacancy) {
             statusText = 'Status Desconhecido';
             statusColorClass = 'text-gray-500';
         }
-        buttonOrStatusHtml = `<p class="application-status text-center text-sm mt-2 ${statusColorClass} font-semibold">Status: ${statusText}</p>`;
+        buttonOrStatusHtml = `<p class="application-status text-center text-sm ${statusColorClass} font-semibold">Status: ${statusText}</p>`;
     } else {
         buttonOrStatusHtml = `<button class="apply-button bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline w-full">Candidatar-se</button>`;
     }
 
+    const saveButtonIcon = vacancy.isSaved ? 'fas fa-bookmark' : 'far fa-bookmark';
+    const saveButtonTitle = vacancy.isSaved ? 'Remover vaga salva' : 'Salvar vaga';
+    const saveButtonTextColor = vacancy.isSaved ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400';
+
     return `
-        <div class="bg-white p-6 rounded-lg shadow-md vacancy-card" data-id="${vacancy.id}">
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">${vacancy.title}</h3>
-            <p class="text-gray-600 text-sm mb-3">Empresa: ${vacancy.company}</p>
-            <p class="text-gray-600 text-sm mb-3">${vacancy.description}</p>
-            <p class="text-gray-700 font-medium mb-3">Local: ${vacancy.location}</p>
-            ${buttonOrStatusHtml}
+        <div class="bg-white p-6 rounded-lg shadow-md vacancy-card dark:bg-gray-800" data-id="${vacancy.id}">
+            <div class="flex justify-between items-start mb-2">
+                <h3 class="text-xl font-semibold text-gray-800 dark:text-white w-11/12">${vacancy.title}</h3>
+                <button class="save-button ${saveButtonTextColor} hover:text-blue-500 focus:outline-none" title="${saveButtonTitle}">
+                    <i class="${saveButtonIcon} fa-lg"></i>
+                </button>
+            </div>
+            <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">Empresa: ${vacancy.company}</p>
+            <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">${vacancy.description}</p>
+            <p class="text-gray-700 dark:text-gray-300 font-medium mb-3">Local: ${vacancy.location}</p>
+            <div class="mt-4">
+                ${buttonOrStatusHtml}
+            </div>
         </div>
     `;
 }
 
-function handleApplyButtonClick() {
-    const vacancyCard = this.closest('.vacancy-card');
+
+function handleApplyButtonClick(button) {
+    const vacancyCard = button.closest('.vacancy-card');
     const vacancyId = parseInt(vacancyCard.dataset.id);
     const vacancy = allVacancies.find(v => v.id === vacancyId);
 
     if (vacancy && vacancy.status === 'available') {
-        this.disabled = true;
-        this.classList.remove('bg-green-500', 'hover:bg-green-600');
-        this.classList.add('bg-gray-400', 'cursor-not-allowed');
-        this.textContent = 'Candidatando...';
+        button.disabled = true;
+        button.classList.remove('bg-green-500', 'hover:bg-green-600');
+        button.classList.add('bg-gray-400', 'cursor-not-allowed');
+        button.textContent = 'Candidatando...';
 
         setTimeout(() => {
             vacancy.status = 'pending';
@@ -366,27 +379,74 @@ function handleApplyButtonClick() {
     }
 }
 
+function handleSaveButtonClick(button) {
+    const vacancyCard = button.closest('.vacancy-card');
+    const vacancyId = parseInt(vacancyCard.dataset.id);
+    const vacancy = allVacancies.find(v => v.id === vacancyId);
+
+    if (vacancy) {
+        vacancy.isSaved = !vacancy.isSaved; // Alterna o estado
+        if (vacancy.isSaved) {
+            showModal(`Vaga "${vacancy.title}" salva com sucesso!`);
+        } else {
+            showModal(`Vaga "${vacancy.title}" removida.`);
+        }
+        renderVacancies();
+    }
+}
+
 
 function showVacanciesTab(tab) {
+    // Esconde todos os painéis
+    availableVacanciesContent.classList.add('hidden');
+    appliedVacanciesContent.classList.add('hidden');
+    savedVacanciesContent.classList.add('hidden');
+
+    // Reseta todos os botões para o estado inativo
+    const allTabButtons = [btnAvailableVacancies, btnAppliedVacancies, btnSavedVacancies];
+    allTabButtons.forEach(btn => {
+        btn.classList.remove('active', 'bg-blue-500', 'text-white');
+        btn.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300', 'dark:bg-gray-700', 'dark:text-gray-200', 'dark:hover:bg-gray-600');
+    });
+
+    let activeBtn;
+    let activeContent;
+
     if (tab === 'available') {
-        availableVacanciesContent.classList.remove('hidden');
-        appliedVacanciesContent.classList.add('hidden');
-        btnAvailableVacancies.classList.add('active', 'bg-blue-500', 'text-white');
-        btnAvailableVacancies.classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
-        btnAppliedVacancies.classList.remove('active', 'bg-blue-500', 'text-white');
-        btnAppliedVacancies.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
+        activeBtn = btnAvailableVacancies;
+        activeContent = availableVacanciesContent;
     } else if (tab === 'applied') {
-        availableVacanciesContent.classList.add('hidden');
-        appliedVacanciesContent.classList.remove('hidden');
-        btnAppliedVacancies.classList.add('active', 'bg-blue-500', 'text-white');
-        btnAppliedVacancies.classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
-        btnAvailableVacancies.classList.remove('active', 'bg-blue-500', 'text-white');
-        btnAvailableVacancies.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
+        activeBtn = btnAppliedVacancies;
+        activeContent = appliedVacanciesContent;
+    } else if (tab === 'saved') {
+        activeBtn = btnSavedVacancies;
+        activeContent = savedVacanciesContent;
+    }
+
+    // Ativa o botão e o painel corretos
+    if (activeBtn && activeContent) {
+        activeContent.classList.remove('hidden');
+        activeBtn.classList.add('active', 'bg-blue-500', 'text-white');
+        activeBtn.classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300', 'dark:bg-gray-700', 'dark:text-gray-200', 'dark:hover:bg-gray-600');
     }
 }
 
 btnAvailableVacancies.addEventListener('click', () => showVacanciesTab('available'));
 btnAppliedVacancies.addEventListener('click', () => showVacanciesTab('applied'));
+btnSavedVacancies.addEventListener('click', () => showVacanciesTab('saved'));
+
+// Event Delegation para os botões de ação nas vagas
+jobVacanciesPage.addEventListener('click', function(event) {
+    const applyButton = event.target.closest('.apply-button');
+    const saveButton = event.target.closest('.save-button');
+
+    if (applyButton) {
+        handleApplyButtonClick(applyButton);
+    }
+    if (saveButton) {
+        handleSaveButtonClick(saveButton);
+    }
+});
 
 
 function logout() {
@@ -410,8 +470,15 @@ function logout() {
         }
     }
     
-    allVacancies.forEach(v => v.status = 'available');
+    allVacancies.forEach(v => {
+        v.status = 'available';
+        v.isSaved = false;
+    });
     renderVacancies();
 }
 
-document.addEventListener('DOMContentLoaded', renderVacancies);
+document.addEventListener('DOMContentLoaded', () => {
+    // Inicia na aba de vagas disponíveis
+    showVacanciesTab('available');
+    renderVacancies();
+});

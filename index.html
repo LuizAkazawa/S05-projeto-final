@@ -154,9 +154,10 @@
 
             <div id="jobVacanciesPage" class="page hidden">
                 <h2 class="text-3xl font-bold text-gray-800 mb-4">Vagas de Emprego</h2>
-                <div class="flex space-x-4 mb-6">
-                    <button id="btnAvailableVacancies" class="tab-button bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 active">Vagas Disponíveis</button>
-                    <button id="btnAppliedVacancies" class="tab-button bg-gray-200 text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50">Vagas Candidatadas</button>
+                <div class="flex space-x-2 md:space-x-4 mb-6">
+                    <button id="btnAvailableVacancies" class="tab-button">Vagas Disponíveis</button>
+                    <button id="btnAppliedVacancies" class="tab-button">Vagas Candidatadas</button>
+                    <button id="btnSavedVacancies" class="tab-button">Vagas Salvas</button>
                 </div>
 
                 <div id="availableVacanciesContent" class="vacancies-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -165,6 +166,9 @@
                 <div id="appliedVacanciesContent" class="vacancies-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
                     <p class="text-gray-600 text-center col-span-full" id="noAppliedVacanciesMessage">Nenhuma vaga candidata ainda.</p>
                 </div>
+                
+                <div id="savedVacanciesContent" class="vacancies-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+                    </div>
             </div>
         </div>
     </div>
